@@ -115,7 +115,6 @@ const searchCards = (query) => {
     url: cardsUri,
     success: function(data) {
       // Convert string of JSON to JSON Object
-      console.log(data)
       const cards = data.cards
       outputCards(cards)
     },
@@ -134,8 +133,6 @@ const outputCards = (cards) => {
   const openCardContainer = $(settings.contentHooks.openCardContainer)
   const closedCardContainer = $(settings.contentHooks.closedCardContainer)
   for (var i = 0; i < cards.length; i++ ){
-      console.log(cards[i])
-
       // Get the card's list and conditionally format based on that list
       const cardList = cards[i].list.name
       const isComplete =  (cardList === 'For Review' ? true : false)
@@ -227,7 +224,6 @@ const updateCardStatus = (cardId) => {
 const syncCard = (data) => {
 
   // Clear the Incomplete message
-  console.log($('.notDone'))
   $('.notDone').hide()
 
   // Let the user know they are done ... if they are done
