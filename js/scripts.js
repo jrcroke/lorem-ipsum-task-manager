@@ -88,6 +88,31 @@ const getLists = () => {
 }
 
 // ----
+// Search for cards with query
+// ----
+const searchCards = (query) => {
+
+  // TODO - Refine to pull only necessary data
+  const cardsUri =  "https://api.trello.com/1/search?query=" + query + "&idBoards=5d6492f7120c5b050fe8a929&modelTypes=cards&board_fields=name%2Curl&boards_limit=10&card_fields=all&cards_limit=100&cards_page=0&card_board=false&card_list=true&card_members=false&card_stickers=false&card_attachments=false&organization_fields=name%2CdisplayName&organizations_limit=10&member_fields=avatarHash%2CfullName%2Cinitials%2Cusername%2Cconfirmed&members_limit=10&partial=false&key=" + settings.apiKey + "&token=" + settings.apiToken
+
+  $.ajax({
+    type: "GET",
+    async: true,
+    url: cardsUri,
+    success: function(data) {
+      // Convert string of JSON to JSON Object
+      console.log(data)
+      const cards = data.cards
+      outputCards(cards)
+    },
+    error: function(data) {
+      console.log('Card not found')
+    }
+  })
+
+}
+
+// ----
 //  Package up the initial loaders
 // ----
 const init = () => {
