@@ -187,7 +187,27 @@ const outputCards = (cards) => {
     closedCardContainer.append(notDone)
   }
 
+}
 
+
+// ----
+// Update the status of a card based on card ID
+// ----
+const updateCardStatus = (cardId) => {
+
+  const cardUri =  "https://api.trello.com/1/cards/" + cardId + "?idList=" + settings.lists.forReview + "&key=" + settings.apiKey + "&token=" + settings.apiToken
+
+  $.ajax({
+    type: "PUT",
+    async: true,
+    url: cardUri,
+    success: function(data) {
+      syncCard(data)
+    },
+    error: function(data) {
+      console.log('Unable to Update card')
+    }
+  })
 }
 
 // ----
