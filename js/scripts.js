@@ -15,8 +15,13 @@ const settings = {
     openCardContainer: '#open-card-container',
     closedCardContainer: '#closed-card-container',
     cardDiv: '.cardDiv'
+  },
+  messages: {
+    'tasksDone': '<div class="alert alert-success" role="alert">Well Done! All task are currenty marked complete.</div>',
+    'tasksIncomplete': '<div class="alert alert-danger" role="alert">There are not any tasks marked complete :(</div>'
   }
 }
+
 
 // ----
 // Authorize to Trello
@@ -33,6 +38,7 @@ const authTrello = (settings) => {
     error: function() { console.log("Trello authentication failed"); }
   })
 }
+
 
 // ----
 // Retrieve a board by ID
@@ -53,6 +59,7 @@ const getBoard = () => {
     })
 }
 
+
 // ----
 // Retrieve cards by List ID
 // ----
@@ -70,6 +77,7 @@ const getCards = (listId) => {
       }
     })
 }
+
 
 // ----
 // Retrieve lists
@@ -91,6 +99,7 @@ const getLists = () => {
     })
 
 }
+
 
 // ----
 // Search for cards with query
@@ -116,6 +125,7 @@ const searchCards = (query) => {
   })
 
 }
+
 
 // ----
 // Generate a card in the DOM
@@ -210,12 +220,46 @@ const updateCardStatus = (cardId) => {
   })
 }
 
+
+// ----
+//  Sync Card to DOM
+// ----
+const syncCard = (data) => {
+
+  // Clear the Incomplete message
+  console.log($('.notDone'))
+  $('.notDone').hide()
+
+  // Let the user know they are done ... if they are done
+  const openCardContainer = $(settings.contentHooks.openCardContainer)
+  const openCardCount = openCardContainer.find(settings.contentHooks.cardDiv).length
+  if(openCardCount <=1 ){
+     const wellDone = $('<div/>', {
+          'class': 'wellDone',
+          'html': settings.messages.tasksDone
+      })
+    openCardContainer.append(wellDone)
+  }
+
+  // Mark the current card for review and move it to the Close Task pane
+  const closedCardContainer = $(settings.contentHooks.closedCardContainer)
+  const currentCard = $('*[data-card-id="' + data.id + '"]')
+  currentCard.removeClass('outstandingTask')
+  currentCard.addClass('completedTask')
+  currentCard.find('.list').html('For Review')
+
+  closedCardContainer.append(currentCard)
+
+}
+
+
 // ----
 //  Package up the initial loaders
 // ----
 const init = () => {
 
-  getLists()
+  const labelQuery = 'label:CLIENT'
+  searchCards(labelQuery)
 
 }
 
@@ -223,4 +267,4 @@ const init = () => {
 // ----
 //	Push the fist domino
 // ----
-$(document ).ready( init() );
+$(document ).ready( init(settings) );
