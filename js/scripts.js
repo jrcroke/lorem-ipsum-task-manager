@@ -10,6 +10,11 @@ const settings = {
   },
   lists: {
     forReview: '5d6492f7120c5b050fe8a92e'
+  },
+  contentHooks: {
+    openCardContainer: '#open-card-container',
+    closedCardContainer: '#closed-card-container',
+    cardDiv: '.cardDiv'
   }
 }
 
@@ -109,6 +114,79 @@ const searchCards = (query) => {
       console.log('Card not found')
     }
   })
+
+}
+
+// ----
+// Generate a card in the DOM
+// ----
+const outputCards = (cards) => {
+  const openCardContainer = $(settings.contentHooks.openCardContainer)
+  const closedCardContainer = $(settings.contentHooks.closedCardContainer)
+  for (var i = 0; i < cards.length; i++ ){
+      console.log(cards[i])
+
+      // Get the card's list and conditionally format based on that list
+      const cardList = cards[i].list.name
+      const isComplete =  (cardList === 'For Review' ? true : false)
+      let cardClass = 'cardDiv col-md-4'
+      cardClass += (isComplete ? ' completedTask' : ' outstandingTask')
+
+      // Only output the button if not completed
+      const btnHtml = (cardList === 'For Review' ? '' : '<button type="button" class="btn btn-sm btn-outline-success btn-done" data-card-id="' + cards[i].id + '">Done!</button>')
+
+      const card = $('<div/>', {
+          'class': cardClass,
+          'data-card-id' : cards[i].id,
+          'html': '<div class="card mb-4 shadow-sm">' +
+            ' <div class="card-body">' +
+                '<p class="card-text">' + cards[i].name + '</p>' +
+                '<div class="d-flex justify-content-between align-items-center">' +
+                  '<div class="btn-group btn-wrapper">' +
+                    btnHtml +
+                  '</div>' +
+                  '<small class="text-muted"><i>List:</i> <span class="list">' + cards[i].list.name + '</span></small>' +
+                '</div>' +
+              '</div>' +
+            '</div>'
+
+      })
+
+      if(isComplete){
+        closedCardContainer.append(card)
+      } else {
+        openCardContainer.append(card)
+      }
+
+   }
+
+   const updateButton = $('.btn-done')
+
+    updateButton.click(function() {
+      const cardId = $(this).data('card-id')
+      updateCardStatus(cardId)
+    });
+
+    // Let the user know they are done ... if they are done
+  const openCardCount = openCardContainer.find(settings.contentHooks.cardDiv).length
+  if(!openCardCount){
+     const wellDone = $('<div/>', {
+          'class': 'wellDone',
+          'html': settings.messages.tasksDone
+      })
+    openCardContainer.append(wellDone)
+  }
+
+    // Let the user know they have some work to do
+  const closedCardCount = closedCardContainer.find(settings.contentHooks.cardDiv).length
+  if(!closedCardCount){
+     const notDone = $('<div/>', {
+          'class': 'notDone',
+          'html': settings.messages.tasksIncomplete
+      })
+    closedCardContainer.append(notDone)
+  }
+
 
 }
 
