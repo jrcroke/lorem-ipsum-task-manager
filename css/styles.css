@@ -1,0 +1,23 @@
+/* ---- Jumbotron Area ---- */
+main .jumbotron {
+  background-color: #fff;
+  margin-bottom: 0;
+}
+
+/* ---- Main Content ---- */
+.container h2 {
+  margin-bottom: 1.5rem
+}
+
+/* ---- Cards ---- */
+#closed-card-container .completedTask.btn-done {
+  display: none;
+}
+.alert {
+    margin-left: 1rem;
+}
+
+/* ---- Footer ---- */
+footer.text-muted {
+  padding-top: 1rem;
+}
