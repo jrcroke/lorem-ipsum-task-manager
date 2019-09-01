@@ -3,7 +3,7 @@ A Web App leveraging the Trello API that provides the Lorem Ipsum team a view of
 
 [Upstatement - Take Home Project](https://trello.com/b/JoqP7X3L/upstatement-take-home-project) - The Trello board that the Upstatement Task Manager is currently configured to interact.
 
-[An Live Example](https://www.jcroke.com/upstatement-task-manager/) of the Upstatement Task Manager running on jcroke.com
+[A Live Example](https://www.jcroke.com/upstatement-task-manager/) of the Upstatement Task Manager running on jcroke.com
 
 ## Dependencies
 
