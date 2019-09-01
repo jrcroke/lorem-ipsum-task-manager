@@ -234,6 +234,7 @@ const syncCard = (data) => {
 //  Package up the initial loaders
 // ----
 const init = () => {
+  // Filter out cards with the CLIENT label
   const labelQuery = "label:CLIENT"
   searchCards(labelQuery)
 }
