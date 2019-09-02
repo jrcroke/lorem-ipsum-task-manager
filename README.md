@@ -1,4 +1,4 @@
-# Upstatement Task Manager
+# Lorem Ipsum Task Manager
 A Web App leveraging the Trello API that provides the Lorem Ipsum team a view of their tasks.
 
 [Upstatement - Take Home Project](https://trello.com/b/JoqP7X3L/upstatement-take-home-project) - The Trello board that the Task Manager is currently configured to interact with.
