@@ -23,7 +23,7 @@ const settings = {
   messages: {
     tasksDone: "<div class='alert alert-success' role='alert'>Well Done! All task are currenty marked complete.</div>",
     tasksIncomplete: "<div class='alert alert-warning' role='alert'>There are not any tasks marked complete :(</div>",
-    apiError: "<div class='alert alert-danger' role='alert'>Apologies ... the connection to Trello is not working at the moment. Please try again in a few minutes and <a href='mailto:help@upstatement.com'>let us know</a> if you continue to have issues.</div>"
+    apiError: "<div class='alert alert-danger' role='alert'>Apologies ... the connection to Trello is not working at the moment. Please try again in a few minutes and <a href='mailto:jrcroke@gmail.com'>let us know</a> if you continue to have issues.</div>"
   }
 }
 
