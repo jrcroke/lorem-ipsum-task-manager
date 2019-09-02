@@ -4,14 +4,16 @@
 const settings = {
   trello: {
     apiUri: "https://api.trello.com/1/",
-    apiKey: "Add apiKey Here",
-    apiToken: "Add apiToken Here",
+    apiKey: "f0fa976d2c2df5c3765e51e83b9744b9",
     board: {
       id: "5d6492f7120c5b050fe8a929"
     },
     lists: {
       forReview: "5d6492f7120c5b050fe8a92e"
-    }
+    },
+    labels: {
+      query: "label:CLIENT"
+    },
   },
   contentHooks: {
     openCardContainer: "#open-card-container",
@@ -28,16 +30,15 @@ const settings = {
 // ----
 // Authorize to Trello - Good for user logging into Trello and viewing thier content
 // ----
-const authTrello = (settings) => {
+const authTrello = () => {
   Trello.authorize({
     type: 'redirect',
-    name: 'Trello Authentication',
+    name: 'Trello Auth for Lorem Ipsum Task Manager',
     scope: {
       read: true,
       write: true
     },
-    expiration: '1hour',
-    success: getboard(settings),
+    expiration: '30days',
     error: function() {
       console.log('Trello authentication failed');
     }
@@ -48,7 +49,7 @@ const authTrello = (settings) => {
 // Retrieve a board by ID
 // ----
 const getboard = () => {
-  const boardUri = settings.trello.apiUri + 'boards/' + settings.board.id + '/lists?key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+  const boardUri = settings.trello.apiUri + 'boards/' + settings.trello.board.id + '/lists?key=' + settings.trello.apiKey + '&token=' + localStorage.trello_token
   console.log(boardUri)
   $.ajax({
     type: 'GET',
@@ -67,7 +68,7 @@ const getboard = () => {
 // Retrieve cards by List ID
 // ----
 const getCards = (listId) => {
-  const cardsUri = settings.trello.apiUri + 'lists/' + listId + '/cards?key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+  const cardsUri = settings.trello.apiUri + 'lists/' + listId + '/cards?key=' + settings.trello.apiKey + '&token=' + localStorage.trello_token
   $.ajax({
     type: 'GET',
     async: false,
@@ -85,7 +86,7 @@ const getCards = (listId) => {
 // Retrieve Trello Lists
 // ----
 const getlists = () => {
-  const listsUri = settings.trello.apiUri + 'boards/' + settings.board.id + '/lists?fields=all&filter=all&key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+  const listsUri = settings.trello.apiUri + 'boards/' + settings.board.id + '/lists?fields=all&filter=all&key=' + settings.trello.apiKey + '&token=' + localStorage.trello_token
   $.ajax({
     type: 'GET',
     async: false,
@@ -102,8 +103,8 @@ const getlists = () => {
 // ----
 // Search for cards with query - Great for getting cards by board with a list filter
 // ----
-const searchCards = (query) => {
-  const cardsUri = 'https://api.trello.com/1/search?query=' + query + '&idboards=5d6492f7120c5b050fe8a929&modelTypes=cards&board_fields=name%2Curl&card_fields=all&card_list=true&key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+const searchCards = () => {
+  const cardsUri = 'https://api.trello.com/1/search?query=' + settings.trello.labels.query + '&idboards=' + settings.trello.board.id + '&modelTypes=cards&board_fields=name%2Curl&card_fields=all&card_list=true&key=' + settings.trello.apiKey + '&token=' + localStorage.trello_token
   $.ajax({
     type: 'GET',
     async: true,
@@ -191,7 +192,7 @@ const outputCards = (cards) => {
 // Update the status of a card based on card ID
 // ----
 const updateCardStatus = (cardId) => {
-  const cardUri = 'https://api.trello.com/1/cards/' + cardId + '?idList=' + settings.trello.lists.forReview + '&key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+  const cardUri = 'https://api.trello.com/1/cards/' + cardId + '?idList=' + settings.trello.lists.forReview + '&key=' + settings.trello.apiKey + '&token=' + localStorage.trello_token
   $.ajax({
     type: 'PUT',
     async: true,
@@ -234,11 +235,15 @@ const syncCard = (data) => {
 //  Package up the initial loaders
 // ----
 const init = () => {
-  const labelQuery = "label:CLIENT"
-  searchCards(labelQuery)
+  // First, handle Trello Auth
+  authTrello()
+  // If the user is authenticated, deal some cards
+  if(localStorage.trello_token){
+    searchCards()
+  }
 }
 
 // ----
 //	Push the fist domino
 // ----
-$(document).ready(init(settings))
+$(document).ready(init())
