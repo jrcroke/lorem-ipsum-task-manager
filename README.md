@@ -14,7 +14,7 @@ Grab the source repo:
 git clone https://github.com/jrcroke/lorem-ipsum-task-manager.git
 ```
 
-Request the apiKey and apiToken from an [administrator](jrcroke@gmail.com).
+Request the apiKey and apiToken from an [administrator](mailto:jrcroke@gmail.com).
 
 Update the apiKey and apiToken values in the `settings` object on line 4 of `js/scripts.js`
 
@@ -36,6 +36,8 @@ Update the apiKey and apiToken values in the `settings` object on line 4 of `js/
 ## Running Locally
 
 Add the source files to a local web server.
+
+Update `js/scripts.js` with the apiKey and apiToken. (Steps outlined above in **Configuring** block)
 
 Open `index.html` in a web browser (with an active internet connection to facilitate the Trello API calls).
 
