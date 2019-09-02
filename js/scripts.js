@@ -5,13 +5,16 @@ const settings = {
   trello: {
     apiUri: "https://api.trello.com/1/",
     apiKey: "f0fa976d2c2df5c3765e51e83b9744b9",
-    apiToken: "d08e5d3463ec8b3fd0e82df54d4b2b0f5f3e89d1a707345b3eb180bf6263ae08",
+    apiToken: localStorage.trello_token,
     board: {
       id: "5d6492f7120c5b050fe8a929"
     },
     lists: {
       forReview: "5d6492f7120c5b050fe8a92e"
-    }
+    },
+    labels: {
+      query: "label:CLIENT"
+    },
   },
   contentHooks: {
     openCardContainer: "#open-card-container",
@@ -28,7 +31,8 @@ const settings = {
 // ----
 // Authorize to Trello - Good for user logging into Trello and viewing thier content
 // ----
-const authTrello = (settings) => {
+const authTrello = () => {
+  console.log('auth to trello')
   Trello.authorize({
     type: 'redirect',
     name: 'Trello Authentication',
@@ -36,8 +40,9 @@ const authTrello = (settings) => {
       read: true,
       write: true
     },
-    expiration: '1hour',
-    success: getboard(settings),
+    expiration: '30days',
+    success: searchCards(),
+    response_type: 'token',
     error: function() {
       console.log('Trello authentication failed');
     }
@@ -48,7 +53,7 @@ const authTrello = (settings) => {
 // Retrieve a board by ID
 // ----
 const getboard = () => {
-  const boardUri = settings.trello.apiUri + 'boards/' + settings.board.id + '/lists?key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+  const boardUri = settings.trello.apiUri + 'boards/' + settings.trello.board.id + '/lists?key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
   console.log(boardUri)
   $.ajax({
     type: 'GET',
@@ -102,8 +107,8 @@ const getlists = () => {
 // ----
 // Search for cards with query - Great for getting cards by board with a list filter
 // ----
-const searchCards = (query) => {
-  const cardsUri = 'https://api.trello.com/1/search?query=' + query + '&idboards=5d6492f7120c5b050fe8a929&modelTypes=cards&board_fields=name%2Curl&card_fields=all&card_list=true&key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
+const searchCards = () => {
+  const cardsUri = 'https://api.trello.com/1/search?query=' + settings.trello.labels.query + '&idboards=' + settings.trello.board.id + '&modelTypes=cards&board_fields=name%2Curl&card_fields=all&card_list=true&key=' + settings.trello.apiKey + '&token=' + settings.trello.apiToken
   $.ajax({
     type: 'GET',
     async: true,
@@ -234,12 +239,11 @@ const syncCard = (data) => {
 //  Package up the initial loaders
 // ----
 const init = () => {
-  // Filter out cards with the CLIENT label
-  const labelQuery = "label:CLIENT"
-  searchCards(labelQuery)
+  // First, auth user to Trello
+  authTrello()
 }
 
 // ----
 //	Push the fist domino
 // ----
-$(document).ready(init(settings))
+$(document).ready(init())
