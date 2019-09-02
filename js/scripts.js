@@ -4,8 +4,8 @@
 const settings = {
   trello: {
     apiUri: "https://api.trello.com/1/",
-    apiKey: "f0fa976d2c2df5c3765e51e83b9744b9",
-    apiToken: "d08e5d3463ec8b3fd0e82df54d4b2b0f5f3e89d1a707345b3eb180bf6263ae08",
+    apiKey: "Add apiKey Here",
+    apiToken: "Add apiToken Here",
     board: {
       id: "5d6492f7120c5b050fe8a929"
     },
@@ -21,7 +21,7 @@ const settings = {
   messages: {
     tasksDone: "<div class='alert alert-success' role='alert'>Well Done! All task are currenty marked complete.</div>",
     tasksIncomplete: "<div class='alert alert-warning' role='alert'>There are not any tasks marked complete :(</div>",
-    apiError: "<div class='alert alert-danger' role='alert'>Apologies ... the connection to Trello is not working at the moment. Please try again in a few minutes and <a href='mailto:help@upstatement.com'>let us know</a> if you continue to have issues.</div>"
+    apiError: "<div class='alert alert-danger' role='alert'>Apologies ... the connection to Trello is not working at the moment. Please try again in a few minutes and <a href='mailto:jrcroke@gmail.com'>let us know</a> if you continue to have issues.</div>"
   }
 }
 
